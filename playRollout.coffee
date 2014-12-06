@@ -26,8 +26,9 @@ avg = (list) ->
 
 discountReward = (rewards, gamma) ->
   sum = 0
-  for r, i in rewards:
-    sum += r * (gamma ** i)
+  for r, i in rewards
+    do (r,i) ->
+      sum += r * (gamma ** i)
 
 singleRollout = (s, h) ->
   rewards = []
@@ -42,8 +43,10 @@ doRollouts = (st, w, h) ->
     tempState = st.copy()
     discountedRewards.push (singleRollout tempState)
   # Do some stuff
-  avg discountedRewards
 
+  avg discountedRewards
+updatePolicy = (avgDiscRwd) ->
+  avgDiscRwd
 playGame = (filenames) ->
   ais = (loadStrategy(filename) for filename in filenames)
   st = new State().setUpWithOptions(ais, {
@@ -53,8 +56,8 @@ playGame = (filenames) ->
     require: []
   })
   until st.gameIsOver()
-    if st.phase is 'start':
-      results = doRollouts(st)
+    if st.phase is 'start'
+      results = doRollouts(st,arg_w,arg_h)
       updatePolicy(results)
       # More stuff??
     st.doPlay()
@@ -63,7 +66,10 @@ playGame = (filenames) ->
   result
 
 this.playGame = playGame
-args = process.argv[2...]
+arg_w = process.argv[2]
+arg_h = process.argv[3]
+console.log "w: #{arg_w}  :: h: #{arg_h}"
+args = process.argv[4...]
 playGame(args)
 
 exports.loadStrategy = loadStrategy
