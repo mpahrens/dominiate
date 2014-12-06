@@ -24,6 +24,9 @@ avg = (list) ->
   sum = list.reduce (t, s) -> t + s
   sum / list.length
 
+getReward = (s) ->
+  5
+
 discountReward = (rewards, gamma) ->
   sum = 0
   for r, i in rewards
@@ -39,14 +42,20 @@ singleRollout = (s, h) ->
 
 doRollouts = (st, w, h) ->
   discountedRewards = []
+  tempState = null
   for sample in [0..w]
     tempState = st.copy()
-    discountedRewards.push (singleRollout tempState)
+    discountedRewards.push(singleRollout(tempState, h))
   # Do some stuff
+  console.log "Turns Taken:"
+  console.log tempState.players[0].turnsTaken
+  console.log st.players[0].turnsTaken
 
   avg discountedRewards
+
 updatePolicy = (avgDiscRwd) ->
   avgDiscRwd
+
 playGame = (filenames) ->
   ais = (loadStrategy(filename) for filename in filenames)
   st = new State().setUpWithOptions(ais, {

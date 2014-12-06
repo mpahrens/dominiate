@@ -1369,6 +1369,7 @@ class State
     newState.copperValue = @copperValue
     newState.phase = @phase
     newState.cache = {}
+    newState.totalCards = @totalCards
 
     newState
 
