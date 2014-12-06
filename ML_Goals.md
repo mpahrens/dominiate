@@ -9,6 +9,7 @@
 == Info ==
 - play.coffee has main state game loop
     - has access to state variable in until loop
+- Reward function: combination of victory points, buying power.
 
 == stuff to find out ==
 - Does state st have a copy constructor

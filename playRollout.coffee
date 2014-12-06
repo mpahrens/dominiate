@@ -24,9 +24,13 @@ avg = (list) ->
   sum = list.reduce ((t, s) -> t + s), 0
   sum / list.length
 
+getMLPlayer = (s) ->
+  selfs = s.players.filter (p) -> p.name[..4] isnt "Robot"
+  selfs[0]
+
 getReward = (s) ->
-  self = s.players[0]
-  others = s.players[1..]
+  self = getMLPlayer(s)
+  others = s.players.filter (p) -> p isnt self
   avgMoney = avg (p.getTotalMoney() for p in others)
   avgVP = avg (p.getVP() for p in others)
   return (self.getTotalMoney() + self.getVP())/(avgMoney+avgVP)
@@ -72,18 +76,20 @@ playGame = (filenames) ->
     log: console.log
     require: []
   })
+  st.players[0].name = "Andrew&Matt"
+  for player,i in st.players[1..]
+    player.name = "Robot#{i}"
+  console.log st.players
   until st.gameIsOver()
+    console.log
     if st.phase is 'start'
       results = doRollouts(st,arg_w,arg_h)
-      console.log results
       updatePolicy(results)
       # More stuff??
     st.doPlay()
-  result = ([player.ai.toString(), player.getVP(st), player.turnsTaken] for player in st.players)
+  result = ([player.name, player.ai.toString(), player.getVP(st), player.turnsTaken] for player in st.players)
   console.log(result)
-
-  console.log "#{st.players[0].ai.toString()}'s reward: #{getReward st}"
-
+  console.log "player #{getMLPlayer(st).name} reward: #{getReward(st)}"
   result
 
 this.playGame = playGame
