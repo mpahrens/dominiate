@@ -36,11 +36,9 @@ discountReward = (rewards, gamma) ->
 singleRollout = (s, h) ->
   rewards = []
   i = 0
-  while i < h*2
+  while i < h*s.nPlayers
     if s.phase is 'start'
       i += 1
-      # if i%2
-      #   console.log "i: #{i}, turns: #{s.players[0].turnsTaken}"
     s.doPlay()
     rewards.push getReward(s)
   discountReward rewards
