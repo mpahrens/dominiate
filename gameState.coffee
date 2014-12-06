@@ -3,7 +3,7 @@
 {c,transferCard,transferCardToTop} = require './cards' if exports?
 
 # The PlayerState class
-# ---------------------  
+# ---------------------
 # A PlayerState stores the part of the game state
 # that is specific to each player, plus what AI is making the decisions.
 class PlayerState
@@ -13,11 +13,12 @@ class PlayerState
   initialize: (ai, logFunc) ->
     # These attributes of the PlayerState are okay for card effects and
     # AI strategies to refer to.
-    # 
+    #
     # Often, you will want to find out something
     # about the player whose turn it is, who will appear as `state.current`.
     # For example, if you want to know how many actions the current player
     # has, you can look up `state.current.actions`.
+    @name = ""
     @actions = 1
     @buys = 1
     @coins = 0
@@ -34,7 +35,7 @@ class PlayerState
     # It can correspond to a physical mat, like the Island or Pirate Ship
     # Mat or just a place to set things aside for cards like Haven.
     @mats = {}
-    
+
     # If you want to ask what's in a player's draw pile, be sure to only do
     # it to a *hypothetical* PlayerState that you retrieve with
     # `state.hypothetical(ai)`. Then the draw pile will contain a random
@@ -53,12 +54,12 @@ class PlayerState
     # fact that *that particular* Feast is already in the trash.
     @playLocation = 'inPlay'
     @gainLocation = 'discard'
-    
+
     # The `actionStack` is not a physical location for cards to be in; it's
     # a computational list of what actions are in play but not yet resolved.
     # This becomes particularly important with King's Courts.
     @actionStack = []
-    
+
     # Set the properties passed in from the State.
     @ai = ai
     @logFunc = logFunc
@@ -69,12 +70,12 @@ class PlayerState
     this
 
   #### Informational methods
-  # 
+  #
   # The methods here ask about general properties of a player's deck,
   # discard pile, and so on. A number of similar methods appear on the `State`
   # class defined below, which deal with information that is not so
   # player-specific, such as the cards in the supply.
-  # 
+  #
   # As an example:
   # Most AI code will start with a reference to the State, called `state`.
   # If you want to check the number of cards in the current player's deck,
@@ -86,7 +87,7 @@ class PlayerState
   # the *state object* itself:
   #
   #    state.numEmptyPiles()
-  
+
   # `getDeck()` returns all the cards in the player's deck, even those in
   # strange places such as the Island mat.
   getDeck: () ->
@@ -121,14 +122,14 @@ class PlayerState
       if card.toString() == card2.toString()
         count++
     count
-  
+
   # `numCardsInDeck()` returns the size of the player's deck.
   numCardsInDeck: () -> this.getDeck().length
 
-  # Aliases for `numCardsInDeck` that you might use intuitively. 
+  # Aliases for `numCardsInDeck` that you might use intuitively.
   countCardsInDeck: this.numCardsInDeck
   cardsInDeck: this.numCardsInDeck
-  
+
   # `countCardTypeInDeck(type)` counts the number of cards of a given type
   # in the deck. Curse is not a type for these purposes, it's a card.
   countCardTypeInDeck: (type) ->
@@ -148,7 +149,7 @@ class PlayerState
       total += card.getVP(this)
     total
   countVP: this.getVP
-  
+
   # `getTotalMoney()` adds up the total money in the player's deck,
   # including both Treasure and +$x, +y Actions cards.
   getTotalMoney: () ->
@@ -166,7 +167,7 @@ class PlayerState
   getAvailableMoney: () ->
     this.coins + this.getTreasureInHand()
   availableMoney: this.getAvailableMoney
-  
+
   # `getTreasureInHand()` adds up the value of the treasure in the player's
   # hand. Banks and Ventures and such will be inaccurate.
   #
@@ -179,14 +180,14 @@ class PlayerState
         total += card.coins
     total
   treasureInHand: this.getTreasureInHand
-  
+
   countPlayableTerminals: (state) ->
     if (@actions>0)
       @actions + ( (Math.max (card.getActions(state) - 1), 0 for card in this.hand).reduce (s,t) -> s + t)
     else 0
-  numPlayableTerminals: this.countPlayableTerminals    
-  playableTerminals: this.countPlayableTerminals    
-   
+  numPlayableTerminals: this.countPlayableTerminals
+  playableTerminals: this.countPlayableTerminals
+
   # `countInHand(card)` counts the number of copies of a card in hand.
   countInHand: (card) ->
     countStr(@hand, card)
@@ -202,20 +203,20 @@ class PlayerState
   # to take Throne Rooms and King's Courts into account.
   countInPlay: (card) ->
     countStr(@inPlay, card)
-  
+
   # `numActionCardsInDeck()` is the number of action cards in the player's
   # entire deck.
   numActionCardsInDeck: () ->
     this.countCardTypeInDeck('Action')
-  
+
   # `getActionDensity()` returns a fractional value, between 0.0 and 1.0,
   # representing the proportion of actions in the deck.
   getActionDensity: () ->
     this.numActionCardsInDeck() / this.getDeck().length
-  
+
   # `menagerieDraws()` is the number of cards the player would draw upon
   # playing a Menagerie: either 1 or 3.
-  # 
+  #
   # *TODO*: allow for a hypothetical version where it's okay to have another
   # Menagerie.
   menagerieDraws: () ->
@@ -244,7 +245,7 @@ class PlayerState
           cardsToDraw = 0
           break
     cardsToDraw
-  
+
   # `actionBalance()` is a complex method meant to be used by AIs in
   # deciding whether they want +actions or +cards, for example.
   #
@@ -291,7 +292,7 @@ class PlayerState
       trash += 2 if card is c.Ambassador
       trash += 1 if card is c.Watchtower
     return trash
-  
+
   numUniqueCardsInPlay: () ->
     unique = []
     cards = @inPlay.concat(@duration)
@@ -313,7 +314,7 @@ class PlayerState
   # `getCardsFromDeck` is a sub-method of many things that need to happen
   # with the game. It takes `nCards` cards off the deck, and then
   # *returns* them so you can do something with them.
-  # 
+  #
   # Code that calls `getCardsFromDeck`
   # is responsible for making sure the cards aren't just "dropped on the
   # floor" after that, so to speak.
@@ -327,12 +328,12 @@ class PlayerState
         return drawn.concat(this.getCardsFromDeck(diff))
       else
         return drawn
-        
+
     else
       drawn = @draw[0...nCards]
       @draw = @draw[nCards...]
       return drawn
-  
+
   # `dig` is a function to draw and reveal cards from the deck until
   # certain ones are found. The cards to be found are defined by digFunc,
   # which takes (state, card) and returns true if card is one that we're
@@ -369,19 +370,19 @@ class PlayerState
       state.handleDiscards(this, this.setAside)
       this.setAside = []
     foundCards
-  
+
   discardFromDeck: (nCards) ->
     throw new Error("discardFromDeck is done by the state now")
-  
+
   doDiscard: (card) ->
     throw new Error("doDiscard is done by the state now")
-  
+
   doTrash: (card) ->
     throw new Error("doTrash is done by the state now")
 
   doPutOnDeck: (card) ->
     throw new Error("doPutOnDeck is done by the state now")
-  
+
   shuffle: () ->
     this.log("(#{@ai} shuffles.)")
     if @draw.length > 0
@@ -394,6 +395,7 @@ class PlayerState
   # Most PlayerStates are created by copying an existing one.
   copy: () ->
     other = new PlayerState()
+    other.name = @name
     other.actions = @actions
     other.buys = @buys
     other.coins = @coins
@@ -425,7 +427,7 @@ class PlayerState
     other.turnsTaken = @turnsTaken
     other.coinTokensSpendThisTurn = @coinTokensSpendThisTurn
     other
-  
+
   # Games can provide output using the `log` function.
   log: (obj) ->
     if this.logFunc?
@@ -438,7 +440,7 @@ class PlayerState
 # The State class
 # ---------------
 # A State instance stores the complete state of the game at a point in time.
-# 
+#
 # Almost all operations work by changing the game state. This means that if
 # AI code wants to evaluate potential decisions, it should do them using a
 # copy of the state (often one with hidden information in it).
@@ -446,11 +448,11 @@ class State
   basicSupply: [c.Curse, c.Copper, c.Silver, c.Gold,
                 c.Estate, c.Duchy, c.Province]
   extraSupply: [c.Potion, c.Platinum, c.Colony]
-  
+
   # AIs can get at the `c` object that stores information about cards
   # by looking up `state.cardInfo`.
   cardInfo: c
-  
+
   # Set up the state at the start of the game. Takes these arguments:
   #
   # - `ais`: a list of AI objects that will make the decisions, one per player.
@@ -488,9 +490,9 @@ class State
     @copperValue = 1
     @phase = 'start'
     @extraturn = false
-    
+
     @cache = {}
-    
+
     # The `depth` indicates how deep into hypothetical situations we are. A depth of 0
     # indicates the state of the actual game.
     @depth = 0
@@ -506,7 +508,7 @@ class State
     @totalCards = this.countTotalCards()
 
     return this
-  
+
   # `setUpWithOptions` is the function I'd like to use as the primary way of setting up
   # a new game, doing the work of choosing a set of kingdom and extra cards (what I call
   # the tableau) with the cards they require plus random cards, and handling options.
@@ -539,7 +541,7 @@ class State
 
     if tableau.length > 10
       throw new Error("These strategies require too many different cards to play against each other.")
-    
+
     index = 0
     moreCards = c.allCards.slice(0)
     shuffle(moreCards)
@@ -552,15 +554,15 @@ class State
     if options.colonies
       tableau.push(c.Colony)
       tableau.push(c.Platinum)
-    
+
     for card in tableau
       if card.costPotion > 0
         if c.Potion not in tableau
           tableau.push(c.Potion)
-    
+
     if options.randomizeOrder
       shuffle(ais)
-    
+
     return this.initialize(ais, tableau, options.log ? console.log)
 
   # Given the tableau (the set of non-basic cards in play), construct the
@@ -585,11 +587,11 @@ class State
       if value == 0
         piles.push(key)
     piles
-  
+
   # `numEmptyPiles()` simply returns the number of empty piles.
   numEmptyPiles: () ->
     this.emptyPiles().length
-  
+
   # `filledPiles()` determines which supply piles are not empty.
   filledPiles: () ->
     piles = []
@@ -597,7 +599,7 @@ class State
       if value > 0
         piles.push(key)
     piles
-  
+
   # `gameIsOver()` returns whether the game is over.
   gameIsOver: () ->
     # The game can only end after a player has taken a full turn. Check that
@@ -630,7 +632,7 @@ class State
     scores = this.getFinalStatus()
     best = []
     bestScore = -Infinity
-    
+
     for [player, score, turns] in scores
       # Modify the score by subtracting a fraction of turnsTaken.
       modScore = score - turns/100
@@ -641,7 +643,7 @@ class State
         best = [player]
         bestScore = modScore
     best
-  
+
   # `countInSupply()` returns the number of copies of a card that remain
   # in the supply. It can take in either a card object or card name.
   #
@@ -650,7 +652,7 @@ class State
   # a non-Colony game. This does not count as an empty pile, of course.
   countInSupply: (card) ->
     @supply[card] ? 0
-  
+
   # `totalPilesToEndGame()` returns the number of empty piles that triggers
   # the end of the game, which is almost always 3.
   totalPilesToEndGame: () ->
@@ -680,7 +682,7 @@ class State
     # Cache the result; apparently it's expensive to compute.
     @cache.gainsToEndGame = minimum
     minimum
-  
+
   # `smugglerChoices` determines the set of cards that could be gained with a
   # Smuggler.
   smugglerChoices: () ->
@@ -691,7 +693,7 @@ class State
       if potions == 0 and coins <= 6
         choices.push(card)
     choices
-  
+
   # `countTotalCards` counts the number of cards that exist anywhere.
   countTotalCards: () ->
     total = 0
@@ -703,7 +705,7 @@ class State
       total += count
     total += @trash.length
     total
-    
+
   buyCausesToLose: (player, state, card) ->
     if not card? || @supply[card] > 1 || state.gainsToEndGame() > 1
       return false
@@ -736,7 +738,7 @@ class State
 
     hypState.gainCard(hypMy, card, 'discard', true)
     card.onBuy(hypState)
-      
+
 
     for i in [hypMy.inPlay.length-1...-1]
         cardInPlay = hypMy.inPlay[i]
@@ -749,19 +751,19 @@ class State
         hypMy.chips += goonses
     #
     # C&P until here
-    
+
     #finish buyPhase
     hypState.doBuyPhase()
-    
+
     # find out if game ended and who if we have won it
     hypState.phase = 'start'
-    if not hypState.gameIsOver() 
+    if not hypState.gameIsOver()
       return false
     if ( hypMy.ai.toString() in hypState.getWinners() )
       return false
     state.log("Buying #{card} will cause #{player.ai} to lose the game")
     return true
-   
+
 
   #### Playing a turn
   #
@@ -776,12 +778,12 @@ class State
   # - 'buy': buy some number of cards, then go to cleanup phase
   # - 'cleanup': resolve cleanup effects, discard everything, draw 5 cards,
   #     and go to the start phase of the next player's turn.
-  # 
+  #
   # To play the entire game, iterate `doPlay()` until `gameIsOver()`. Putting
   # this in a single loop would be a bad idea because it would make Web
   # browsers freeze up. Browser-facing code should return control after each
   # call to `doPlay()`.
-  doPlay: () ->  
+  doPlay: () ->
     switch @phase
       when 'start'
         if not @extraturn
@@ -808,7 +810,7 @@ class State
           this.rotatePlayer()
         else
           @phase = 'start'
-  
+
   # `@current.duration` contains all cards that are in play with duration
   # effects. At the start of the turn, check all of these cards and run their
   # `onDuration` method.
@@ -828,9 +830,9 @@ class State
     for card in @current.multipliedDurations
       this.log("#{@current.ai} resolves the duration effect of #{card} again.")
       card.onDuration(this)
-    
+
     @current.multipliedDurations = []
-  
+
   # Perform the action phase. Ask the AI repeatedly which action to play,
   # until there are no more action cards to play or there are no
   # actions remaining to play them with, or the AI chooses `null`, indicating
@@ -852,7 +854,7 @@ class State
         this.warn("#{@current.ai} chose an invalid action.")
         return
       this.playAction(action)
-  
+
   # The current player plays an action from the hand, and performs the effect
   # of the action.
   playAction: (action) ->
@@ -864,7 +866,7 @@ class State
     @current.playLocation = 'inPlay'
     @current.actions -= 1
     this.resolveAction(action)
-    
+
   # Another event that causes actions to be played, such as Throne Room,
   # should skip straight to `resolveAction`.
   resolveAction: (action) ->
@@ -872,7 +874,7 @@ class State
     @current.actionsPlayed += 1
     action.onPlay(this)
     @current.actionStack.pop()
-  
+
   # The "treasure phase" is a concept introduced in Prosperity. After playing
   # actions, you play any number of treasures in some order. This loop
   # repeats until the AI chooses `null`, either because there are no treasures
@@ -885,7 +887,7 @@ class State
       for card in @current.hand
         if card.isTreasure and card not in validTreasures
           validTreasures.push(card)
-      
+
       # Ask the AI for its choice.
       treasure = @current.ai.chooseTreasure(this, validTreasures)
       break if treasure is null
@@ -896,11 +898,11 @@ class State
         this.warn("#{@current.ai} chose an invalid treasure")
         break
       this.playTreasure(treasure)
-    
+
     while (ctd = this.getCoinTokenDecision()) > 0
       @current.coins += ctd
       @current.coinTokens -= ctd
-  
+
   getCoinTokenDecision: () ->
     ct = @current.ai.spendCoinTokens(this, @current)
     if (ct > @current.coinTokens)
@@ -911,8 +913,8 @@ class State
         this.log("#{@current.ai} spends #{ct} Coin Token#{if ct > 1 then "s" else ""}")
     @current.coinTokensSpendThisTurn = ct
     return ct
-    
-  
+
+
   playTreasure: (treasure) ->
     @current.hand.remove(treasure)
     @current.inPlay.push(treasure)
@@ -940,7 +942,7 @@ class State
     # Note that this just cares for the buyPhase, gains by other means (Workshop) are not covered
     if checkSuicide
       buyable = (card for card in buyable when (not this.buyCausesToLose(@current, this, card)))
-        
+
     # Ask the AI for its choice.
     this.log("Coins: #{@current.coins}, Potions: #{@current.potions}, Buys: #{@current.buys}")
     this.log("Coin Tokens left: #{@current.coinTokens}")
@@ -967,7 +969,7 @@ class State
       # Gain the card and deal with the effects.
       this.gainCard(@current, choice, 'discard', true)
       choice.onBuy(this)
-      
+
       # Handle cards such as Talisman that respond to cards being bought.
       for i in [@current.inPlay.length-1...-1]
         cardInPlay = @current.inPlay[i]
@@ -976,7 +978,7 @@ class State
         # Talisman, Quarry, Border Village, and Mandarin.
         if cardInPlay?
           cardInPlay.buyInPlayEffect(this, choice)
-  
+
   # Handle all the things that happen at the end of the turn.
   doCleanupPhase: () ->
     # Clean up Walled Villages first
@@ -985,13 +987,13 @@ class State
       if card.isAction
         actionCardsInPlay += 1
 
-    if actionCardsInPlay <= 2  
+    if actionCardsInPlay <= 2
       while c['Walled Village'] in @current.inPlay
         transferCardToTop(c['Walled Village'], @current.inPlay, @current.draw)
         this.log("#{@current.ai} returns a Walled Village to the top of the deck.")
 
     @extraturn = not @extraturn and (c['Outpost'] in @current.inPlay)
-    
+
     # Discard old duration cards.
     @current.discard = @current.discard.concat @current.duration
     @current.duration = []
@@ -1002,7 +1004,7 @@ class State
       this.warn(["Cards were set aside at the end of turn", @current.setAside])
       @current.discard = @current.discard.concat @current.setAside
       @current.setAside = []
-    
+
     # Check which multiplier cards ended up in `multipliedDurations`, which means
     # they should be cleaned up as if they were duration cards. Remove them once
     # they're dealt with. Disregard the other cards there for now.
@@ -1049,15 +1051,15 @@ class State
     @costModifiers = []
 
     #Announce extra turn
-    if @extraturn       
+    if @extraturn
       this.log("#{@current.ai} takes an extra turn from Outpost.")
-    
+
     # Finally, draw the next hand of three/five cards.
     if not (c.Outpost in @current.duration)
       @current.drawCards(5)
     else
       @current.drawCards(3)
-    
+
     # Make sure we didn't drop cards on the floor.
     if this.countTotalCards() != @totalCards
       throw new Error("The game started with #{@totalCards} cards; now there are #{this.countTotalCards()}")
@@ -1071,7 +1073,7 @@ class State
     @players = @players[1...@nPlayers].concat [@players[0]]
     @current = @players[0]
     @phase = 'start'
-  
+
   #### Small-scale effects
   # `gainCard` performs the effects of a player gaining a card.
   #
@@ -1092,12 +1094,12 @@ class State
       # Keep track of the card gained, for Smugglers.
       if player is @current
         player.gainedThisTurn.push(card)
-      
+
       # `suppressMessage` is true when this happens as the direct result of a
       # buy. Nobody wants to read "X buys Y. X gains Y." all the time.
       if not suppressMessage
         this.log("#{player.ai} gains #{card}.")
-      
+
       # Determine what list the card is being gained in, and add it to the
       # front of that list.
       location = player[gainLocation]
@@ -1115,7 +1117,7 @@ class State
       this.handleGainCard(player, card, gainLocation, gainSource)
     else
       this.log("There is no #{card} to gain.")
-  
+
   # `handleGainCard` deals with the reactions that result from gaining a card.
   # A card effect such as Thief needs to call this explicitly after gaining a
   # card from someplace that is not the supply or the prize list.
@@ -1128,19 +1130,19 @@ class State
 
     for own supplyCard, quantity of @specialSupply
       c[supplyCard].globalGainEffect(this, player, card, gainSource)
-    
+
     # Handle cards such as Royal Seal that respond to gains while they are
     # in play.
     for i in [player.inPlay.length-1...-1]
       cardInPlay = player.inPlay[i]
       cardInPlay.gainInPlayEffect(this, card)
-    
+
     # Handle cards such as Watchtower that react to gains as a Reaction card.
     for i in [player.hand.length-1...-1]
       reactCard = player.hand[i]
       if reactCard.isReaction
         reactCard.reactToGain(this, player, card)
-    
+
     for opp in this.players[1...]
       for i in [opp.hand.length-1...-1]
         reactCard = opp.hand[i]
@@ -1148,14 +1150,14 @@ class State
           reactCard.reactToOpponentGain(this, opp, player, card)
 
     # Handle the card's own effects of being gained.
-    card.onGain(this, player)      
-  
+    card.onGain(this, player)
+
   # Effects of an action could cause players to reveal their hand.
   # So far, nothing happens as a result, but in the future, AIs might
   # be able to take advantage of the information.
   revealHand: (player) ->
     this.log("#{player.ai} reveals the hand (#{player.hand}).")
-  
+
   # `drawCards` causes the player to draw `num` cards.
   #
   # This currently passes through directly to the PlayerState, without
@@ -1163,7 +1165,7 @@ class State
   # An improved version would pass the state in case the player shuffles,
   # and has Stash in the deck, and wants to use information from the state
   # to decide where to put the Stash.
-  # 
+  #
   # The drawn cards will be returned.
   drawCards: (player, num) ->
     player.drawCards(num)
@@ -1177,7 +1179,7 @@ class State
     this.log("#{player.ai} draws and discards #{drawn.length} cards (#{drawn}).")
     this.handleDiscards(player, drawn)
     return drawn
-  
+
   # `doDiscard` causes the player to discard a particular card.
   doDiscard: (player, card) ->
     if card not in player.hand
@@ -1187,7 +1189,7 @@ class State
     player.hand.remove(card)
     player.discard.push(card)
     this.handleDiscards(player, [card])
-  
+
   # `handleDiscards` looks through a list of cards and triggers their discard
   # reactions.
   handleDiscards: (player, cards) ->
@@ -1204,7 +1206,7 @@ class State
     player.hand.remove(card)
     card.onTrash(this, player)
     @trash.push(card)
-  
+
   # `doPutOnDeck` puts a particular card from the player's hand on top of
   # the player's draw pile.
   doPutOnDeck: (player, card) ->
@@ -1214,7 +1216,7 @@ class State
     this.log("#{player.ai} puts #{card} on deck.")
     player.hand.remove(card)
     player.draw.unshift(card)
-  
+
   # `getCardsFromDeck` is superficially similar to `drawCards`, but it does
   # not put the cards into the hand. Any code that calls it needs to determine
   # what happens to those cards (otherwise they'll be dropped on the floor!)
@@ -1239,7 +1241,7 @@ class State
       discarded.push(choice)
       this.doDiscard(player, choice)
     return discarded
-  
+
   # `requireDiscard` requires the player to discard exactly `num` cards,
   # except that it stops if the player has 0 cards in hand.
   requireDiscard: (player, num, typeFunc = (card) -> true) ->
@@ -1251,7 +1253,7 @@ class State
       discarded.push(choice)
       this.doDiscard(player, choice)
     return discarded
-  
+
   # `allowTrash` and `requireTrash` are similar to `allowDiscard` and
   # `requireDiscard`.
   allowTrash: (player, num) ->
@@ -1264,7 +1266,7 @@ class State
       trashed.push(choice)
       this.doTrash(player, choice)
     return trashed
-  
+
   requireTrash: (player, num) ->
     trashed = []
     while trashed.length < num
@@ -1274,7 +1276,7 @@ class State
       trashed.push(choice)
       this.doTrash(player, choice)
     return trashed
-  
+
   # `gainOneOf` gives the player a choice of cards to gain. Include
   # `null` if gaining nothing is an option.
   gainOneOf: (player, options, location='discard') ->
@@ -1282,7 +1284,7 @@ class State
     return null if choice is null
     this.gainCard(player, choice, location)
     return choice
-  
+
   # `attackOpponents` takes in a function of one argument, and applies
   # it to all players except the one whose turn it is.
   #
@@ -1294,7 +1296,7 @@ class State
   attackOpponents: (effect) ->
     for opp in @players[1...]
       this.attackPlayer(opp, effect)
-  
+
   # `attackPlayer` does the work of attacking a particular player, including
   # handling their reactions to attacks.
   attackPlayer: (player, effect) ->
@@ -1307,14 +1309,14 @@ class State
 
     for card in reactionCards
       card.reactToAttack(this, player, attackEvent)
-    
+
     for card in player.duration
       card.durationReactToAttack(this, player, attackEvent)
-    
+
     # Apply the attack's effect unless it's been blocked by a card such as
     # Moat or Lighthouse
     effect(player) unless attackEvent.blocked
-  
+
   #### Bookkeeping
   # `copy()` makes a copy of this state that can be safely mutated
   # without affecting the original state.
@@ -1327,7 +1329,7 @@ class State
     newSupply = {}
     for key, value of @supply
       newSupply[key] = value
-    
+
     newSpecialSupply = {}
     for key, value of @specialSupply
       newSpecialSupply[key] = value
@@ -1357,7 +1359,7 @@ class State
       else
         # Simple types
         newCardState[card] = state
-    
+
     newState.players = newPlayers
     newState.supply = newSupply
     newState.specialSupply = newSpecialSupply
@@ -1410,7 +1412,7 @@ class State
         my = player
 
     [state, my]
-  
+
   # Functions for comparing, used for sorting
   #
   # Rob says: this is pretty AI-specific. It's also an unnecessarily complex operation,
@@ -1419,17 +1421,17 @@ class State
   compareByActionPriority: (state, my, x, y) ->
     my.ai.cacheActionPriority(state,my)
     my.ai.choiceToValue('cachedAction', state, x) - my.ai.choiceToValue('cachedAction', state, y)
-    
+
   compareByCoinCost: (state, my, x, y) ->
     x.getCost(state)[0] - y.getCost(state)[0]
-  
+
   # Games can provide output using the `log` function.
   log: (obj) ->
     # Only log things that actually happen.
     if @depth == 0
       if this.logFunc?
         this.logFunc(obj)
-      else 
+      else
         if console?
           console.log(obj)
 
@@ -1558,7 +1560,7 @@ this.PlayerState = PlayerState
 #
 # Here's why that is useful. When the code
 # is running inside node.js, it will use node.js's import system. This
-# uses the predefined function `require`, which doesn't exist in a 
+# uses the predefined function `require`, which doesn't exist in a
 # Web browser's JS environment.
 #
 # When running in a web browser, there is no sane way for one module to
