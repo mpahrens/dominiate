@@ -21,17 +21,22 @@ loadStrategy = (filename) ->
   ai
 
 avg = (list) ->
-  sum = list.reduce (t, s) -> t + s
+  sum = list.reduce ((t, s) -> t + s), 0
   sum / list.length
 
 getReward = (s) ->
-  5
+  self = s.players[0]
+  others = s.players[1..]
+  avgMoney = avg (p.getTotalMoney() for p in others)
+  avgVP = avg (p.getVP() for p in others)
+  return (self.getTotalMoney() + self.getVP())/(avgMoney+avgVP)
 
 discountReward = (rewards, gamma) ->
   sum = 0
   for r, i in rewards
     do (r,i) ->
       sum += r * (gamma ** i)
+  sum
 
 singleRollout = (s, h) ->
   rewards = []
@@ -41,20 +46,20 @@ singleRollout = (s, h) ->
       i += 1
     s.doPlay()
     rewards.push getReward(s)
-  discountReward rewards
+  discountReward(rewards, 0.9)
 
 doRollouts = (st, w, h) ->
-  discountedRewards = []
+  totalDiscountedRewards = []
   tempState = null
   for sample in [0..w]
     tempState = st.copy()
-    discountedRewards.push(singleRollout(tempState, h))
+    totalDiscountedRewards.push(singleRollout(tempState, h))
   # Do some stuff
   console.log "Turns Taken:"
   console.log tempState.players[0].turnsTaken
   console.log st.players[0].turnsTaken
 
-  avg discountedRewards
+  avg totalDiscountedRewards
 
 updatePolicy = (avgDiscRwd) ->
   avgDiscRwd
@@ -70,11 +75,15 @@ playGame = (filenames) ->
   until st.gameIsOver()
     if st.phase is 'start'
       results = doRollouts(st,arg_w,arg_h)
+      console.log results
       updatePolicy(results)
       # More stuff??
     st.doPlay()
   result = ([player.ai.toString(), player.getVP(st), player.turnsTaken] for player in st.players)
   console.log(result)
+
+  console.log "#{st.players[0].ai.toString()}'s reward: #{getReward st}"
+
   result
 
 this.playGame = playGame

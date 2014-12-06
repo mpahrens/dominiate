@@ -142,7 +142,7 @@ class PlayerState
 
   # `getVP()` returns the number of VP the player would have if the game
   # ended now.
-  getVP: (state) ->
+  getVP: () ->
     total = @chips
     for card in this.getDeck()
       total += card.getVP(this)
