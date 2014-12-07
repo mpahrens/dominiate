@@ -92,8 +92,8 @@ playGameFromState = (st) ->
   until st.gameIsOver()
     st.doPlay()
   result = ([player.name, player.ai.toString(), player.getVP(st), player.turnsTaken] for player in st.players)
-  console.log(result)
-  console.log "player #{getMLPlayer(st).name} reward: #{getReward(st)}"
+  # console.log(result)
+  # console.log "player #{getMLPlayer(st).name} reward: #{getReward(st)}"
   result
 
 runTrial = (base_st, width) ->
@@ -103,7 +103,8 @@ runTrial = (base_st, width) ->
     st = base_st.copy()
     mlPlayer = getMLPlayer(st)
     playGameFromState st
-    if mlPlayer in st.getWinners()
+    console.log "Winners: #{st.getWinners()}"
+    if "mlPlayer" in (p.name for p in st.getWinners())
       wins += 1
   winRate_new = wins / width
 
@@ -129,6 +130,7 @@ runExperiment = (filenames, episodes, width) ->
     pi_new = mutatePolicy(pi_old, base_st)
     mlPlayer.ai = pi_new
     winRate_new = runTrial(base_st, width)
+    console.log "WIN RATES: New - #{winRate_new} Old - #{winRate_old}"
     if winRate_new > winRate_old
       pi_old = pi_new
       winRate_old = winRate_new
