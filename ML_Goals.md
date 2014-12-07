@@ -15,3 +15,8 @@
 - Does state st have a copy constructor
 - Print stuff to the log
 - how to take an ai, replace the strategy
+
+== TODO ==
+- Matt: Make a function that takes a list of policies, runs k runs of horizon h on each policy and returns the one with the highest average discounted reward
+- Matt: Finish rollout for baseline comparason and run examples to get comparason data.
+- Andrew: Make a function that takes a policy and parameterized the gain priority list and returns a list of policies with variations on those parameters.

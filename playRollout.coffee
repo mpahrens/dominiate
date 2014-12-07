@@ -20,6 +20,9 @@ loadStrategy = (filename) ->
     ai[key] = value
   ai
 
+updateStrategy = (ai, player, translator = null) ->
+  player.ai = translator(ai) if translator? else ai
+
 avg = (list) ->
   sum = list.reduce ((t, s) -> t + s), 0
   sum / list.length
