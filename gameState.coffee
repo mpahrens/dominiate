@@ -308,7 +308,7 @@ class PlayerState
   drawCards: (nCards) ->
     drawn = this.getCardsFromDeck(nCards)
     Array::push.apply @hand, drawn
-    this.log("#{@ai} draws #{drawn.length} cards: #{drawn}.")
+    this.log("#{@name} draws #{drawn.length} cards: #{drawn}.")
     return drawn
 
   # `getCardsFromDeck` is a sub-method of many things that need to happen
@@ -360,12 +360,12 @@ class PlayerState
       else
         this.setAside.push(card)
     if revealedCards.length == 0
-      this.log("...#{this.ai} has no cards to draw.")
+      this.log("...#{this.name} has no cards to draw.")
     else
-      this.log("...#{this.ai} reveals #{revealedCards}.")
+      this.log("...#{this.name} reveals #{revealedCards}.")
     if discardSetAside
       if this.setAside.length > 0
-        this.log("...#{this.ai} discards #{this.setAside}.")
+        this.log("...#{this.name} discards #{this.setAside}.")
       this.discard = this.discard.concat(this.setAside)
       state.handleDiscards(this, this.setAside)
       this.setAside = []
@@ -384,7 +384,7 @@ class PlayerState
     throw new Error("doPutOnDeck is done by the state now")
 
   shuffle: () ->
-    this.log("(#{@ai} shuffles.)")
+    this.log("(#{@name} shuffles.)")
     if @draw.length > 0
       throw new Error("Shuffling while there are cards left to draw")
     shuffle(@discard)
@@ -761,7 +761,7 @@ class State
       return false
     if ( hypMy.ai.toString() in hypState.getWinners() )
       return false
-    state.log("Buying #{card} will cause #{player.ai} to lose the game")
+    state.log("Buying #{card} will cause #{player.name} to lose the game")
     return true
 
 
@@ -788,11 +788,11 @@ class State
       when 'start'
         if not @extraturn
           @current.turnsTaken += 1
-          this.log("\n== #{@current.ai}'s turn #{@current.turnsTaken} ==")
+          this.log("\n== #{@current.name}'s turn #{@current.turnsTaken} ==")
           this.doDurationPhase()
           @phase = 'action'
         else
-          this.log("\n== #{@current.ai}'s turn #{@current.turnsTaken}+ ==")
+          this.log("\n== #{@current.name}'s turn #{@current.turnsTaken}+ ==")
           this.doDurationPhase()
           @phase = 'action'
       when 'action'
@@ -822,13 +822,13 @@ class State
     # iterate backwards because cards might move
     for i in [@current.duration.length-1...-1]
       card = @current.duration[i]
-      this.log("#{@current.ai} resolves the duration effect of #{card}.")
+      this.log("#{@current.name} resolves the duration effect of #{card}.")
       card.onDuration(this)
 
     # `@current.multipliedDurations` contains virtual copies of cards, which
     # exist because a multiplier was played on a Duration card.
     for card in @current.multipliedDurations
-      this.log("#{@current.ai} resolves the duration effect of #{card} again.")
+      this.log("#{@current.name} resolves the duration effect of #{card} again.")
       card.onDuration(this)
 
     @current.multipliedDurations = []
@@ -858,7 +858,7 @@ class State
   # The current player plays an action from the hand, and performs the effect
   # of the action.
   playAction: (action) ->
-    this.log("#{@current.ai} plays #{action}.")
+    this.log("#{@current.name} plays #{action}.")
 
     # Subtract 1 from the action count and perform the action.
     @current.hand.remove(action)
@@ -891,11 +891,11 @@ class State
       # Ask the AI for its choice.
       treasure = @current.ai.chooseTreasure(this, validTreasures)
       break if treasure is null
-      this.log("#{@current.ai} plays #{treasure}.")
+      this.log("#{@current.name} plays #{treasure}.")
 
       # Remove the treasure from the hand and put it in the play area.
       if treasure not in @current.hand
-        this.warn("#{@current.ai} chose an invalid treasure")
+        this.warn("#{@current.name} chose an invalid treasure")
         break
       this.playTreasure(treasure)
 
@@ -906,11 +906,11 @@ class State
   getCoinTokenDecision: () ->
     ct = @current.ai.spendCoinTokens(this, @current)
     if (ct > @current.coinTokens)
-      this.log("#{@current.ai} wants to spend more Coin Tokens as it possesses (#{ct}/#{@current.coinTokens})")
+      this.log("#{@current.name} wants to spend more Coin Tokens as it possesses (#{ct}/#{@current.coinTokens})")
       ct = @current.coinTokens
     else
       if (ct > 0)
-        this.log("#{@current.ai} spends #{ct} Coin Token#{if ct > 1 then "s" else ""}")
+        this.log("#{@current.name} spends #{ct} Coin Token#{if ct > 1 then "s" else ""}")
     @current.coinTokensSpendThisTurn = ct
     return ct
 
@@ -958,7 +958,7 @@ class State
     while @current.buys > 0
       choice = this.getSingleBuyDecision()
       return if choice is null
-      this.log("#{@current.ai} buys #{choice}.")
+      this.log("#{@current.name} buys #{choice}.")
 
       # Update money and buys.
       [coinCost, potionCost] = choice.getCost(this)
@@ -990,7 +990,7 @@ class State
     if actionCardsInPlay <= 2
       while c['Walled Village'] in @current.inPlay
         transferCardToTop(c['Walled Village'], @current.inPlay, @current.draw)
-        this.log("#{@current.ai} returns a Walled Village to the top of the deck.")
+        this.log("#{@current.name} returns a Walled Village to the top of the deck.")
 
     @extraturn = not @extraturn and (c['Outpost'] in @current.inPlay)
 
@@ -1011,7 +1011,7 @@ class State
     for i in [@current.multipliedDurations.length-1...-1]
       card = @current.multipliedDurations[i]
       if card.isMultiplier
-        this.log("#{@current.ai} puts a #{card} in the duration area.")
+        this.log("#{@current.name} puts a #{card} in the duration area.")
         @current.inPlay.remove(card)
         @current.duration.push(card)
         @current.multipliedDurations.splice(i, 1)
@@ -1052,7 +1052,7 @@ class State
 
     #Announce extra turn
     if @extraturn
-      this.log("#{@current.ai} takes an extra turn from Outpost.")
+      this.log("#{@current.name} takes an extra turn from Outpost.")
 
     # Finally, draw the next hand of three/five cards.
     if not (c.Outpost in @current.duration)
@@ -1098,7 +1098,7 @@ class State
       # `suppressMessage` is true when this happens as the direct result of a
       # buy. Nobody wants to read "X buys Y. X gains Y." all the time.
       if not suppressMessage
-        this.log("#{player.ai} gains #{card}.")
+        this.log("#{player.name} gains #{card}.")
 
       # Determine what list the card is being gained in, and add it to the
       # front of that list.
@@ -1156,7 +1156,7 @@ class State
   # So far, nothing happens as a result, but in the future, AIs might
   # be able to take advantage of the information.
   revealHand: (player) ->
-    this.log("#{player.ai} reveals the hand (#{player.hand}).")
+    this.log("#{player.name} reveals the hand (#{player.hand}).")
 
   # `drawCards` causes the player to draw `num` cards.
   #
@@ -1176,7 +1176,7 @@ class State
   discardFromDeck: (player, nCards) ->
     drawn = player.getCardsFromDeck(nCards)
     player.discard = player.discard.concat(drawn)
-    this.log("#{player.ai} draws and discards #{drawn.length} cards (#{drawn}).")
+    this.log("#{player.name} draws and discards #{drawn.length} cards (#{drawn}).")
     this.handleDiscards(player, drawn)
     return drawn
 
@@ -1433,7 +1433,7 @@ class State
         this.logFunc(obj)
       else
         if console?
-          console.log(obj)
+          log(obj)
 
   # A warning has a similar effect to a log message, but indicates that
   # something has gone wrong with the gameplay.
