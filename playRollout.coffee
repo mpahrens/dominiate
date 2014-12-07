@@ -21,7 +21,7 @@ loadStrategy = (filename) ->
   ai
 
 updateStrategy = (ai, player, translator = null) ->
-  player.ai = translator(ai) if translator? else ai
+  player.ai = if translator? then translator(ai) else ai
 
 avg = (list) ->
   sum = list.reduce ((t, s) -> t + s), 0
@@ -37,7 +37,7 @@ getReward = (s) ->
   avgMoney = avg (p.getTotalMoney() for p in others)
   avgVP = avg (p.getVP() for p in others)
   if s.gameIsOver()
-    return self.getVP / avgVP
+    return self.getVP() / avgVP
   return (self.getTotalMoney() + self.getVP())/(avgMoney+avgVP)
 
 discountReward = (rewards, gamma) ->
