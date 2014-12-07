@@ -33,6 +33,8 @@ getReward = (s) ->
   others = s.players.filter (p) -> p isnt self
   avgMoney = avg (p.getTotalMoney() for p in others)
   avgVP = avg (p.getVP() for p in others)
+  if s.gameIsOver()
+    return self.getVP / avgVP
   return (self.getTotalMoney() + self.getVP())/(avgMoney+avgVP)
 
 discountReward = (rewards, gamma) ->
