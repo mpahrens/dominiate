@@ -624,7 +624,7 @@ class State
   # `getFinalStatus()` is a useful thing to call when `gameIsOver()` is true.
   # It returns a list of triples of [player name, score, turns taken].
   getFinalStatus: () ->
-    ([player.ai.toString(), player.getVP(this), player.turnsTaken] for player in @players)
+    ([player.name, player.getVP(this), player.turnsTaken] for player in @players)
 
   # `getWinners()` returns a list (usually of length 1) of the names of players
   # that won the game, or would win if it were over now.
@@ -714,7 +714,7 @@ class State
     maxOpponentScore = -Infinity
     for status in this.getFinalStatus()
       [name, score, turns] = status
-      if name == player.ai.toString()
+      if name == player.name
         myScore = score + card.getVP(player)
       else if score > maxOpponentScore
         maxOpponentScore = score

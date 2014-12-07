@@ -88,7 +88,6 @@ mutatePolicy = (oldAi) ->
   oldAi
 
 playGameFromState = (st) ->
-  console.log "Played game"
   until st.gameIsOver()
     st.doPlay()
   result = ([player.name, player.ai.toString(), player.getVP(st), player.turnsTaken] for player in st.players)
@@ -99,12 +98,12 @@ playGameFromState = (st) ->
 runTrial = (base_st, width) ->
   wins = 0
   for w in [0...width]
-    console.log "Trial: #{w}"
+    # console.log "Trial: #{w}"
     st = base_st.copy()
     mlPlayer = getMLPlayer(st)
     playGameFromState st
-    console.log "Winners: #{st.getWinners()}"
-    if "mlPlayer" in (p.name for p in st.getWinners())
+    # console.log "Winners: #{st.getWinners()}"
+    if "mlPlayer" in st.getWinners()
       wins += 1
   winRate_new = wins / width
 
@@ -126,7 +125,7 @@ runExperiment = (filenames, episodes, width) ->
   winRate_old = runTrial(base_st, width)
 
   for ep in [0...episodes]
-    console.log "EPISODE: #{ep}"
+    console.log "\n\nEPISODE: #{ep}"
     pi_new = mutatePolicy(pi_old, base_st)
     mlPlayer.ai = pi_new
     winRate_new = runTrial(base_st, width)
@@ -137,10 +136,10 @@ runExperiment = (filenames, episodes, width) ->
 
   pi_final = pi_new
 
-  # until base_st.gameIsOver()
-    # base_st.doPlay()
+  st = base_st.copy()
+  playGameFromState(st)
 
-  console.log pi_final.gainPriority(base_st, mlPlayer)
+  console.log pi_final.gainPriority(st, mlPlayer)
   # console.log pi_final
 
 arg_e = process.argv[2]
