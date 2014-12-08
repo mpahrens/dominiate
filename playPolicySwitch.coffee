@@ -2,7 +2,7 @@
 #
 # This is the script that you can run at the command line to see how
 # strategies play against each other.
-
+#Matthew Ahrens : adapted from play.coffee by Robert Speer
 {BasicAI} = require './basicAI'
 {State,tableaux} = require './gameState'
 fs = require 'fs'
@@ -115,12 +115,15 @@ playGame = (filenames) ->
   for player,i in st.players[1..]
     player.name = "Robot#{i}"
   #console.log st.players
+  k_temp = 0
   until st.gameIsOver()
     #console.log
     if st.phase is 'start' and st.current is getMLPlayer(st)
       console.log "player ai: #{getMLPlayer(st).ai}"
       results = doRollouts(st,arg_w,arg_h)
-      getMLPlayer(st).ai = updatePolicy(st,results)
+      if k_temp % arg_k == 0
+        getMLPlayer(st).ai = updatePolicy(st,results)
+      k_temp+=1
     st.doPlay()
   result = ([player.name, player.ai.toString(), player.getVP(st), player.turnsTaken] for player in st.players)
   console.log(result)
