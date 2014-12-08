@@ -119,7 +119,7 @@ class PlayerState
   countInDeck: (card) ->
     count = 0
     for card2 in this.getDeck()
-      if card.toString() == card2.toString()
+      if card2? and card.toString() == card2.toString()
         count++
     count
 
@@ -624,7 +624,7 @@ class State
   # `getFinalStatus()` is a useful thing to call when `gameIsOver()` is true.
   # It returns a list of triples of [player name, score, turns taken].
   getFinalStatus: () ->
-    ([player.ai.toString(), player.getVP(this), player.turnsTaken] for player in @players)
+    ([player.name, player.getVP(this), player.turnsTaken] for player in @players)
 
   # `getWinners()` returns a list (usually of length 1) of the names of players
   # that won the game, or would win if it were over now.
@@ -714,7 +714,7 @@ class State
     maxOpponentScore = -Infinity
     for status in this.getFinalStatus()
       [name, score, turns] = status
-      if name == player.ai.toString()
+      if name == player.name
         myScore = score + card.getVP(player)
       else if score > maxOpponentScore
         maxOpponentScore = score
@@ -851,7 +851,7 @@ class State
       return if action is null
       # Remove the action from the hand and put it in the play area.
       if action not in @current.hand
-        this.warn("#{@current.ai} chose an invalid action.")
+        this.warn("#{@current.name} chose an invalid action.")
         return
       this.playAction(action)
 
