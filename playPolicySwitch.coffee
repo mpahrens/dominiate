@@ -137,8 +137,8 @@ arg_ops = []
 arg_policies = []
 for arg,i in process.argv
   if arg == "--help"
-    console.log "usage: ./playPolicySwitch.coffee (-w # -h # -k # -t # -m [normal|egreedy] -i <path to strategy file> -o <path to strategy file>)"
-    console.log "e.g.: ./playPolicySwitch.coffee -w 10 -h 10 -k -t 20 -m normal -i ./strategies/BigMoney.coffee -o ./strategies/BigMoney.coffee"
+    console.log "usage: ./playPolicySwitch.coffee (-w # -h # -k # -t # -i <path to strategy file> -o <path to strategy file>)"
+    console.log "e.g.: ./playPolicySwitch.coffee -w 10 -h 10 -k -t 20 -i ./strategies/BigMoney.coffee -o ./strategies/BigMoney.coffee"
     process.exit 0
   if arg == "-w"
     arg_w = process.argv[i+1]
@@ -156,7 +156,7 @@ for arg,i in process.argv
     arg_ops = arg_ops_temp
   else if arg == "-o" or arg == "-opponent"
     arg_ops.push process.argv[i+1]
-  else if arg == "-p"
+  else if arg == "-p" #restrict policy switch only to the following policies
     n = process.argv[i+1]
     arg_policies = process.argv[i+2...i+2+n]
     #console.log arg_policies

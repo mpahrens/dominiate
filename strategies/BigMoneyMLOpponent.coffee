@@ -1,10 +1,12 @@
-# This is an implementation of the pure Big Money strategy, updated
+# This is an implementation of the pure Big Money
+# strategy for ML purposes, updated
 # based on WanderingWinder's forum posts:
 # http://forum.dominionstrategy.com/index.php?topic=625
 {
   name: 'Big Money ML Opponent'
   author: 'WanderingWinder'
-  requires: ['Bank','Festival', 'Smithy', 'Library','Militia','Bazaar','Woodcutter','Moat','Wharf','Throne Room']
+  requires: ['Bank','Festival', 'Smithy', 'Library','Militia','Bazaar',
+  'Woodcutter','Moat','Wharf','Throne Room']
   gainPriority: (state, my) ->
     if state.supply.Colony?
       [

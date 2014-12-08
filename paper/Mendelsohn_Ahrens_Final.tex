@@ -18,7 +18,7 @@ modified from the IJCAI-13 Instructions for Authors}
 \usepackage{latexsym}
 
 
-\title{Learning Dominion \\ Policy switching and policy search for a deckbuilding card game}
+\title{Policy Improvement for Deck Building Card Games \\ Dominion - a case study}
 \author{Andrew Mendelsohn \and Matthew Ahrens\\
 Tufts University\\
 Medford, Ma \\
@@ -41,7 +41,7 @@ There are many strategies for playing the Dominion, and these strategies are hig
 \section{Methodology}
 \subsection{Representation of dominion as an MDP}
 \subsubsection{definition of state}
-Dominion maps very well to a Markov Decision Problem. In our representation, a state is a vector <M, P> containing M the cards in the market for purchase and the set of  player states. Each player state is a vector <H, m, b, D> where H is the vector of cards in the player’s hand, m is the money available to them this turn, b is the number of cards they can buy this turn, and D is the vector of cards in their deck (order is unobservable). In other words, a state contains the set of all purchasable cards and for each player, the cards owned by that player and the resources available to them this turn. In this model, each state represents one turn, and an action is the decision of which cards to buy on the current turn. The cards are then added to the deck, and the game proceeds to a new state representing the next turn.
+Dominion maps very well to a Markov Decision Problem. In our representation, a state is a vector \textless M, P\textgreater containing M the cards in the market for purchase and the set of  player states. Each player state is a vector \textless H, m, b, D\textgreater where H is the vector of cards in the player’s hand, m is the money available to them this turn, b is the number of cards they can buy this turn, and D is the vector of cards in their deck (order is unobservable). In other words, a state contains the set of all purchasable cards and for each player, the cards owned by that player and the resources available to them this turn. In this model, each state represents one turn, and an action is the decision of which cards to buy on the current turn. The cards are then added to the deck, and the game proceeds to a new state representing the next turn.
 \subsubsection{description of policy}
   Strategies for Dominion are often represented as a priority order or ranking for the cards to be purchased. Additionally, a strategy may require certain cards which may or may not be present in a given game setup. Given a state, a player runs down the priority list and purchases the first card which they can afford. In this way, the policy represents a function from any state to a decision which leads to the next state. Depending on the implementation, these functions often mutate the priority list depending on the game state.
 \subsubsection{choosing a reward function}
@@ -87,7 +87,7 @@ In order to evaluate the policy search method, we ran the method with mutation e
   \includegraphics[width=250]{policy.png}
   \caption{base policy}
 \end{figure}
-The fluctuations in results are due to the fickle nature of the policy representation. Although a single swap in the priority list may seem small, it appears even a single mutation can turn a policy from winning 70% to 2% of its games. However, even a bad mutation is occasionally capable of winning enough games by pure luck to beat a better policy, and due to the bootstrapping in the algorithm, this can cause inconsistency and is the likely reason for the large number of very poorly performing outliers.
+The fluctuations in results are due to the fickle nature of the policy representation. Although a single swap in the priority list may seem small, it appears even a single mutation can turn a policy from winning 70\% to 2\% of its games. However, even a bad mutation is occasionally capable of winning enough games by pure luck to beat a better policy, and due to the bootstrapping in the algorithm, this can cause inconsistency and is the likely reason for the large number of very poorly performing outliers.
   \\
   It is curious, since we only accept strict improvements in policies, why it is possible for a policy derived from a base policy could ever be outperformed by its predecessor. It is likely this is also a result of the bootstrapping technique which can result in multiple levels of indirection by the time the final policy is constructed. At the birth of the final policy, its opponent is no longer the base policy, but one that has itself gone through multiple iterations of adaptation. However, in our testing, bootstrapping more than makes up for its inconsistencies in the large boon it provides to the efficiency of the algorithm as well as its introduction of the capacity to run potentially infinite trials as there is no bound on win rate.
   \\
