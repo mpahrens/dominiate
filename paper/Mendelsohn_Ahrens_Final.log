@@ -1,10 +1,10 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.15 (TeX Live 2014) (preloaded format=pdflatex 2014.5.25)  8 DEC 2014 08:48
+This is pdfTeX, Version 3.14159265-2.6-1.40.15 (TeX Live 2014) (preloaded format=pdflatex 2014.5.25)  8 DEC 2014 08:49
 entering extended mode
  \write18 enabled.
  file:line:error style messages enabled.
  %&-line parsing enabled.
-**ijcai13.tex
-(./ijcai13.tex
+**Mendelsohn_Ahrens_Final.tex
+(./Mendelsohn_Ahrens_Final.tex
 LaTeX2e <2014/05/01>
 Babel <3.9k> and hyphenation patterns for 78 languages loaded.
 Andrew Mendelsohn and Matthew Ahrens Comp150AML final report modified from the IJCAI-13 Instructions for Authors
@@ -59,8 +59,8 @@ Package: latexsym 1998/08/17 v2.2e Standard LaTeX package (lasy symbols)
 \symlasy=\mathgroup4
 LaTeX Font Info:    Overwriting symbol font `lasy' in version `bold'
 (Font)                  U/lasy/m/n --> U/lasy/b/n on input line 47.
-) (./ijcai13.aux)
-\openout1 = `ijcai13.aux'.
+) (./Mendelsohn_Ahrens_Final.aux)
+\openout1 = `Mendelsohn_Ahrens_Final.aux'.
 
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 28.
 LaTeX Font Info:    ... okay on input line 28.
@@ -153,7 +153,7 @@ File: omsptm.fd
 LaTeX Font Info:    Font shape `OMS/ptm/m/n' in size <9> not available
 (Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 38.
 
-./ijcai13.tex:38: Undefined control sequence.
+./Mendelsohn_Ahrens_Final.tex:38: Undefined control sequence.
 <argument> ... is owned by Rio Grande Games. \url 
                                                   {http://riograndegames.com...
 l.38 ...p://riograndegames.com/Game/278-Dominion}}
@@ -196,7 +196,7 @@ Missing character: There is no ™ in font ptmr7t!
 
 
 ]
-./ijcai13.tex:52: Undefined control sequence.
+./Mendelsohn_Ahrens_Final.tex:52: Undefined control sequence.
 <argument> ...\z@ \footnotesep \ignorespaces \url 
                                                   {http://rspeer.github.io/d...
 l.52 ...dominiate/play.html#DoubleJack/BankWharf}}
@@ -207,7 +207,7 @@ misspelled it (e.g., `\hobx'), type `I' and the correct
 spelling (e.g., `I\hbox'). Otherwise just continue,
 and I'll forget about whatever was undefined.
 
-./ijcai13.tex:52: You can't use `macro parameter character #' in horizontal mode.
+./Mendelsohn_Ahrens_Final.tex:52: You can't use `macro parameter character #' in horizontal mode.
 <argument> ...peer.github.io/dominiate/play.html##
                                                   DoubleJack/BankWharf}\@fin...
 l.52 ...dominiate/play.html#DoubleJack/BankWharf}}
@@ -231,7 +231,7 @@ Missing character: There is no ™ in font ptmr7t!
 Missing character: There is no â in font ptmr7t!
 Missing character: There is no € in font ptmr7t!
 Missing character: There is no ™ in font ptmr7t!
-./ijcai13.tex:65: Undefined control sequence.
+./Mendelsohn_Ahrens_Final.tex:65: Undefined control sequence.
 <recently read> \url 
                      
 l.65 ...s\_\\EOMLA\_submitted\_6074\%5B0\%5D.pdf}}
@@ -248,7 +248,7 @@ Overfull \hbox (44.98506pt too wide) in paragraph at lines 65--65
  []
 
 [2] <switch.png, id=14, 316.5426pt x 192.72pt>
-./ijcai13.tex:71: Illegal unit of measure (pt inserted).
+./Mendelsohn_Ahrens_Final.tex:71: Illegal unit of measure (pt inserted).
 <to be read again> 
                    \relax 
 l.71   \includegraphics[width=250]{switch.png}
@@ -260,7 +260,7 @@ To recover gracefully from this error, it's best to
 delete the erroneous units; e.g., type `2' to delete
 two letters. (See Chapter 27 of The TeXbook.)
 
-./ijcai13.tex:71: Illegal unit of measure (pt inserted).
+./Mendelsohn_Ahrens_Final.tex:71: Illegal unit of measure (pt inserted).
 <to be read again> 
                    \relax 
 l.71   \includegraphics[width=250]{switch.png}
@@ -282,7 +282,7 @@ Overfull \hbox (6.08875pt too wide) in paragraph at lines 71--72
  []
 
 
-./ijcai13.tex:75: LaTeX Error: There's no line here to end.
+./Mendelsohn_Ahrens_Final.tex:75: LaTeX Error: There's no line here to end.
 
 See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
@@ -303,7 +303,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 75--79
  []
 
 <search.png, id=16, 315.0972pt x 161.8848pt>
-./ijcai13.tex:81: Illegal unit of measure (pt inserted).
+./Mendelsohn_Ahrens_Final.tex:81: Illegal unit of measure (pt inserted).
 <to be read again> 
                    \relax 
 l.81   \includegraphics[width=250]{search.png}
@@ -315,7 +315,7 @@ To recover gracefully from this error, it's best to
 delete the erroneous units; e.g., type `2' to delete
 two letters. (See Chapter 27 of The TeXbook.)
 
-./ijcai13.tex:81: Illegal unit of measure (pt inserted).
+./Mendelsohn_Ahrens_Final.tex:81: Illegal unit of measure (pt inserted).
 <to be read again> 
                    \relax 
 l.81   \includegraphics[width=250]{search.png}
@@ -337,7 +337,7 @@ Overfull \hbox (6.08875pt too wide) in paragraph at lines 81--82
  []
 
 
-./ijcai13.tex:85: LaTeX Error: There's no line here to end.
+./Mendelsohn_Ahrens_Final.tex:85: LaTeX Error: There's no line here to end.
 
 See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
@@ -350,7 +350,7 @@ Type  I <command> <return>  to replace it with another command,
 or  <return>  to continue without it.
 
 <policy.png, id=17, 670.505pt x 239.89626pt>
-./ijcai13.tex:87: Illegal unit of measure (pt inserted).
+./Mendelsohn_Ahrens_Final.tex:87: Illegal unit of measure (pt inserted).
 <to be read again> 
                    \relax 
 l.87   \includegraphics[width=250]{policy.png}
@@ -362,7 +362,7 @@ To recover gracefully from this error, it's best to
 delete the erroneous units; e.g., type `2' to delete
 two letters. (See Chapter 27 of The TeXbook.)
 
-./ijcai13.tex:87: Illegal unit of measure (pt inserted).
+./Mendelsohn_Ahrens_Final.tex:87: Illegal unit of measure (pt inserted).
 <to be read again> 
                    \relax 
 l.87   \includegraphics[width=250]{policy.png}
@@ -394,7 +394,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 85--96
  []
 
 [3 <./switch.png> <./search.png> <./policy.png>]
-./ijcai13.tex:105: Too many }'s.
+./Mendelsohn_Ahrens_Final.tex:105: Too many }'s.
 l.105 ... proven powerful in a number of domains.}
                                                   
 You've closed more groups than you opened.
@@ -402,17 +402,17 @@ Such booboos are generally harmless, so keep going.
 
 [4
 
-] (./ijcai13.aux) ) 
+] (./Mendelsohn_Ahrens_Final.aux) ) 
 Here is how much of TeX's memory you used:
- 1648 strings out of 493117
- 23778 string characters out of 6135433
+ 1649 strings out of 493117
+ 23929 string characters out of 6135433
  90686 words of memory out of 5000000
  5083 multiletter control sequences out of 15000+600000
  25157 words of font info for 55 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 37i,10n,23p,1536b,242s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 37i,10n,23p,1552b,242s stack positions out of 5000i,500n,10000p,200000b,80000s
 {/usr/local/texlive/2014/texmf-dist/fonts/enc/dvips/base/8r.enc}</usr/local/texlive/2014/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/local/texlive/2014/texmf-dist/fonts/type1/public/amsfonts/cm/cmr7.pfb></usr/local/texlive/2014/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy9.pfb></usr/local/texlive/2014/texmf-dist/fonts/type1/urw/times/utmb8a.pfb></usr/local/texlive/2014/texmf-dist/fonts/type1/urw/times/utmr8a.pfb></usr/local/texlive/2014/texmf-dist/fonts/type1/urw/times/utmri8a.pfb>
-Output written on ijcai13.pdf (4 pages, 176534 bytes).
+Output written on Mendelsohn_Ahrens_Final.pdf (4 pages, 176534 bytes).
 PDF statistics:
  48 PDF objects out of 1000 (max. 8388607)
  30 compressed objects within 1 object stream

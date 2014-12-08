@@ -1,5 +1,5 @@
 # Fdb version 3
-["pdflatex"] 1418046514 "ijcai13.tex" "ijcai13.pdf" "ijcai13" 1418046515
+["pdflatex"] 1418046542 "Mendelsohn_Ahrens_Final.tex" "Mendelsohn_Ahrens_Final.pdf" "Mendelsohn_Ahrens_Final" 1418046543
   "/usr/local/texlive/2014/texmf-dist/fonts/enc/dvips/base/8r.enc" 1165713224 4850 80dc9bab7f31fb78a000ccfed0e27cab ""
   "/usr/local/texlive/2014/texmf-dist/fonts/map/fontname/texfonts.map" 1272929888 3287 e6b82fe08f5336d4d5ebc73fb1152e87 ""
   "/usr/local/texlive/2014/texmf-dist/fonts/tfm/adobe/times/ptmb7t.tfm" 1136768653 2172 fd0c924230362ff848a33632ed45dc23 ""
@@ -65,13 +65,13 @@
   "/usr/local/texlive/2014/texmf-var/fonts/map/pdftex/updmap/pdftex.map" 1401025944 1445653 26a0aacf3d70032b1ec192e8c7792117 ""
   "/usr/local/texlive/2014/texmf-var/web2c/pdftex/pdflatex.fmt" 1401025990 3832012 904d82bdcc8abf2b1cd296990b82553b ""
   "/usr/local/texlive/2014/texmf.cnf" 1401025936 577 a59edbde8d3a8c549d0eeaab1739e2ff ""
-  "ijcai13.aux" 1418046515 1649 c0e7fabd4ebace60f0385dac364c155e ""
+  "Mendelsohn_Ahrens_Final.aux" 1418046543 1649 c0e7fabd4ebace60f0385dac364c155e ""
+  "Mendelsohn_Ahrens_Final.tex" 1418046513 19186 8e83ca5b92c50539412d889c377c8d87 ""
   "ijcai13.sty" 1348241040 13541 5e606d6df666726434195f1e063127dc ""
-  "ijcai13.tex" 1418046513 19186 8e83ca5b92c50539412d889c377c8d87 ""
   "policy.png" 1418043732 24069 78f8ac9f68858ef48d8fd051c6061dd5 ""
   "search.png" 1418043719 77370 2d501adcca66ad562368cf6f862f3526 ""
   "switch.png" 1418043708 41788 afbb0eb0e818d6eba07515ede24f2f10 ""
   (generated)
-  "ijcai13.aux"
-  "ijcai13.log"
-  "ijcai13.pdf"
+  "Mendelsohn_Ahrens_Final.log"
+  "Mendelsohn_Ahrens_Final.aux"
+  "Mendelsohn_Ahrens_Final.pdf"
