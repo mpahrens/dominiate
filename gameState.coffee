@@ -119,7 +119,7 @@ class PlayerState
   countInDeck: (card) ->
     count = 0
     for card2 in this.getDeck()
-      if card.toString() == card2.toString()
+      if card2? and card.toString() == card2.toString()
         count++
     count
 
@@ -155,7 +155,7 @@ class PlayerState
   getTotalMoney: () ->
     total = 0
     for card in this.getDeck()
-      if card.isTreasure or card.actions >= 1
+      if card? and (card.isTreasure or card.actions >= 1)
         total += card.coins
 #        total += card.coinTokens
     total
@@ -851,7 +851,7 @@ class State
       return if action is null
       # Remove the action from the hand and put it in the play area.
       if action not in @current.hand
-        this.warn("#{@current.ai} chose an invalid action.")
+        this.warn("#{@current.name} chose an invalid action.")
         return
       this.playAction(action)
 
