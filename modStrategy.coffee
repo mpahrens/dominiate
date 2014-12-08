@@ -14,10 +14,9 @@ mutatePolicy = (ai, st) ->
   new_ai
 
 mutateGainPriority = (oldGP, state) ->
-  len = oldGP(state, my).length
+  len = oldGP(state, state.players[0]).length
   i = rand(1, len-2)
   upDown = rand(0, 1)
-  console.log "Mutated i: #{i} up/down: #{upDown}"
   (st, my) ->
     list = oldGP(st, my)
     if upDown

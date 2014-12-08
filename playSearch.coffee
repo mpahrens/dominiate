@@ -81,12 +81,6 @@ doRollouts = (st, w, h) ->
 updatePolicy = (avgDiscRwd) ->
   avgDiscRwd
 
-printPolicy = (ai, st) ->
-  console.log 
-
-mutatePolicy = (oldAi) ->
-  oldAi
-
 playGameFromState = (st) ->
   until st.gameIsOver()
     st.doPlay()
@@ -133,6 +127,8 @@ runExperiment = (filenames, episodes, width) ->
     if winRate_new > winRate_old
       pi_old = pi_new
       winRate_old = winRate_new
+    if winRate_new == 1
+      break
 
   pi_final = pi_new
 
