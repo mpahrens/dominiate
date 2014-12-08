@@ -155,7 +155,7 @@ class PlayerState
   getTotalMoney: () ->
     total = 0
     for card in this.getDeck()
-      if card.isTreasure or card.actions >= 1
+      if card? and (card.isTreasure or card.actions >= 1)
         total += card.coins
 #        total += card.coinTokens
     total

@@ -124,7 +124,7 @@ playGame = (filenames) ->
     st.doPlay()
   result = ([player.name, player.ai.toString(), player.getVP(st), player.turnsTaken] for player in st.players)
   console.log(result)
-  console.log "player #{getMLPlayer(st).name} outcome: #{if getReward(st) then "Won" else "Lost"} reward:#{getReward(st)}"
+  console.log "player #{getMLPlayer(st).name} outcome: #{if getReward(st) is 1000 then "Won" else "Lost"} reward:#{getReward(st)}"
   result
 
 this.playGame = playGame
