@@ -31,9 +31,6 @@ loadStrategy = (filename) ->
   #console.log "loaded ai with method: #{ai.chooseAction}"
   ai
 
-updateStrategy = (ai, player, translator = null) ->
-  player.ai = if translator? then translator(ai) else ai
-
 avg = (list) ->
   sum = list.reduce ((t, s) -> t + s), 0
   sum / list.length
