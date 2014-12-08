@@ -110,7 +110,7 @@ runExperiment = (filenames, episodes, width) ->
   ais = (loadStrategy(filename) for filename in filenames)
 
   base_st = new State().setUpWithOptions(ais, {
-    colonies: false
+    colonies: true
     randomizeOrder: false
     log: console.log
     require: []
@@ -119,8 +119,6 @@ runExperiment = (filenames, episodes, width) ->
   setMLPlayer(base_st, ais[0])
   mlPlayer = getMLPlayer(base_st)
   robotPlayer = getRobot(base_st)
-  console.log base_st.players.length
-  console.log "ROBOT: #{robotPlayer.name}"
 
   pi_old = mlPlayer.ai
   winRate_old = runTrial(base_st, width)
@@ -134,7 +132,7 @@ runExperiment = (filenames, episodes, width) ->
     if winRate_new > winRate_old
       pi_old = pi_new
       winRate_old = winRate_new
-    if winRate_new > 0.9
+    if winRate_new > 0.6
       winRate_old = 0.5
       robotPlayer.ai = pi_new
 
